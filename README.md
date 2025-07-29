@@ -1,8 +1,3 @@
-Perfect! Here's a structured and professional `README.md` file tailored for your project **TravelBridge**, ready for submission to the DTP Online Hackathon Rwanda 2025:
-
----
-
-```markdown
 # 🚍 TravelBridge Rwanda
 
 **Your Seamless Gateway to Smart Inter-Province Bus Booking**
