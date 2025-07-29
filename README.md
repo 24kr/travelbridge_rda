@@ -112,5 +112,3 @@ Full diagram available in `/docs/architecture.png`
 *TravelBridge* is a scalable, smart, and inclusive transport solution tailored for Rwanda’s mobility needs. Through a robust DevOps pipeline, it demonstrates efficiency, accessibility, and potential for real-world deployment.
 
 ---
-
-```
