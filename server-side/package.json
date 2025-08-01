@@ -1,8 +1,10 @@
 {
   "dependencies": {
+    "@types/crypto-js": "^4.2.2",
     "axios": "^1.11.0",
     "dotenv": "^17.2.1",
     "express": "^5.1.0",
+    "js-sha3": "^0.9.3",
     "mongo": "^0.1.0",
     "mongoose": "^8.16.5",
     "puppeteer": "^24.15.0",

@@ -1,26 +1,12 @@
-import mongoose, { Schema, Document } from 'mongoose';
+import mongoose from 'mongoose';
 
-export interface IAgency extends Document {
-    name: string;
-    email: string;
-    phone: string;
-    logoUrl?: string;
-    address?: string;
-    isActive: boolean;
-    createdAt: Date;
-    updatedAt: Date;
-}
+const agencySchema = new mongoose.Schema({
+    name: { type: String, required: true },
+    contactEmail: { type: String, required: true },
+    contactPhone: { type: String, required: true },
+    logoUrl: { type: String },
+    busPlateNumbers: [String],
+    routesOffered: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Route' }]
+}, { timestamps: true });
 
-const AgencySchema: Schema = new Schema(
-    {
-        name: { type: String, required: true },
-        email: { type: String, required: true, unique: true },
-        phone: { type: String, required: true },
-        logoUrl: { type: String },
-        address: { type: String },
-        isActive: { type: Boolean, default: true },
-    },
-    { timestamps: true }
-);
-
-export default mongoose.model<IAgency>('Agency', AgencySchema);
+export default mongoose.model('Agency', agencySchema);

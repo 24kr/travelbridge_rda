@@ -1,53 +1,55 @@
+// /models/Booking.ts
 import mongoose, { Schema, Document } from 'mongoose';
+import { sha3_256 } from 'js-sha3';
 
-export interface IBooking extends Document {
+interface BookingDocument extends Document {
   passengerName: string;
-  ticketCode: string;
-  agencyId: mongoose.Types.ObjectId;
-  busId: mongoose.Types.ObjectId;
-  routeId: mongoose.Types.ObjectId;
+  passengerPhone: string;
+  passengerEmail?: string;
+  agency: string;
+  route: string;
+  travelDate: Date;
+  travelTime: string;
+  plateNumber: string;
   seatNumber: string;
-  travelDateTime: Date;
-  bookedAt: Date;
-  amount: number;
-  paymentMethod: 'Mobile Money' | 'Card' | 'Cash';
-  contact: {
-    phone: string;
-    email?: string;
-  };
-  qrData?: string;
-  isVerified: boolean;
-  isBoarded: boolean;
-  canceled: boolean;
-  usedPromoCode?: string;
-  language?: string;
+  ticketCode: string;
+  status: 'PENDING' | 'CONFIRMED' | 'CANCELLED';
+  createdAt: Date;
 }
 
-const BookingSchema: Schema<IBooking> = new Schema({
-  passengerName: { type: String, required: true },
-  ticketCode: { type: String, required: true, unique: true },
-  agencyId: { type: mongoose.Types.ObjectId, ref: 'Agency', required: true },
-  busId: { type: mongoose.Types.ObjectId, ref: 'Bus', required: true },
-  routeId: { type: mongoose.Types.ObjectId, ref: 'Route', required: true },
-  seatNumber: { type: String, required: true },
-  travelDateTime: { type: Date, required: true },
-  bookedAt: { type: Date, default: Date.now },
-  amount: { type: Number, required: true },
-  paymentMethod: {
-    type: String,
-    enum: ['Mobile Money', 'Card', 'Cash'],
-    default: 'Mobile Money'
+const BookingSchema = new Schema<BookingDocument>(
+  {
+    passengerName: { type: String, required: true },
+    passengerPhone: { type: String, required: true },
+    passengerEmail: { type: String },
+    agency: { type: String, required: true },
+    route: { type: String, required: true },
+    travelDate: { type: Date, required: true },
+    travelTime: { type: String, required: true },
+    plateNumber: { type: String, required: true },
+    seatNumber: { type: String, required: true },
+    ticketCode: { type: String, required: true, unique: true },
+    status: {
+      type: String,
+      enum: ['PENDING', 'CONFIRMED', 'CANCELLED'],
+      default: 'PENDING',
+    },
+    createdAt: { type: Date, default: Date.now },
   },
-  contact: {
-    phone: { type: String, required: true },
-    email: { type: String }
-  },
-  qrData: { type: String },
-  isVerified: { type: Boolean, default: false },
-  isBoarded: { type: Boolean, default: false },
-  canceled: { type: Boolean, default: false },
-  usedPromoCode: { type: String },
-  language: { type: String, default: 'en' }
+  {
+    collection: 'bookings',
+  }
+);
+
+// 🧠 Auto-generate ticketCode before saving
+BookingSchema.pre('validate', function (next) {
+  if (!this.ticketCode) {
+    const raw = `${this.agency}-${this.plateNumber}-${this.travelDate.toISOString()}-${this.route}-${this.seatNumber}`;
+    const hash = sha3_256(raw);
+    this.ticketCode = hash.slice(0, 6).toUpperCase();
+  }
+  next();
 });
 
-export default mongoose.models.Booking || mongoose.model<IBooking>('Booking', BookingSchema);
+export default mongoose.models.Booking ||
+  mongoose.model<BookingDocument>('Booking', BookingSchema);
