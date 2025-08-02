@@ -2,7 +2,7 @@
   "name": "travelbridgerda_server",
   "version": "1.0.0",
   "description": "App That Aims On Connecting Rwandans to Their Journey—Anytime, Anywhere.",
-  "main": "server.ts",
+  "main": "index.ts",
   "keywords": [],
   "author": "NGABO MBARAGA Eric",
   "license": "MIT",
@@ -20,7 +20,7 @@
     "puppeteer-core": "^24.15.0"
   },
   "scripts": {
-    "dev": "ts-node-dev --respawn --transpile-only src/server.ts"
+    "dev": "ts-node-dev --respawn --transpile-only src/index.ts"
   },
   "devDependencies": {
     "@types/express": "^5.0.3",
