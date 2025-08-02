@@ -1,7 +1,7 @@
 // src/app/api/book/route.ts
 import { NextRequest, NextResponse } from 'next/server';
 import connectDB from '@/lib/db'; // custom MongoDB connection helper
-import Booking from '@/models/Booking';
+import Booking from '@/lib/models/Booking';
 
 export async function POST(req: NextRequest) {
     await connectDB();
